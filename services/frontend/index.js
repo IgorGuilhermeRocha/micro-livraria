@@ -16,7 +16,7 @@ function newBook(book) {
                 <div class="content book" data-id="${book.id}">
                     <div class="book-meta">
                         <p class="is-size-4">R$${book.price.toFixed(2)}</p>
-                        <p class="is-size-6">Disponível em estoque: 5</p>
+                        <p class="is-size-6">Disponível em estoque: ${book.quantity}</p>
                         <h4 class="is-size-3 title">${book.name}</h4>
                         <p class="subtitle">${book.author}</p>
                     </div>
@@ -28,7 +28,7 @@ function newBook(book) {
                             <a class="button button-shipping is-info" data-id="${book.id}"> Calcular Frete </a>
                         </div>
                     </div>
-                    <button class="button button-buy is-success is-fullwidth">Comprar</button>
+                    <button class="button button-buy is-success is-fullwidth" data-id="${book.id}">Comprar</button>
                 </div>
             </div>
         </div>`;
@@ -51,6 +51,22 @@ function calculateShipping(id, cep) {
             console.error(err);
         });
 }
+
+function buyBook(id) {
+    fetch('http://localhost:3000/purchase/' + id)
+        .then((data) => {
+            if (data.ok) {
+                return data.json();
+            }
+            throw data.statusText;
+        })
+        .catch((err) => {
+            swal('Erro', 'Erro ao comprar livro', 'error');
+            console.error(err);
+        });
+}
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const books = document.querySelector('.books');
@@ -78,7 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 document.querySelectorAll('.button-buy').forEach((btn) => {
                     btn.addEventListener('click', (e) => {
-                        swal('Compra de livro', 'Sua compra foi realizada com sucesso', 'success');
+                        const id = e.target.getAttribute('data-id');
+                        buyBook(id)
+                        swal('Compra de livro', 'Sua compra foi realizada com sucesso ', 'success');
                     });
                 });
             }

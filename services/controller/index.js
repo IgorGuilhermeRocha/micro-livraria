@@ -1,6 +1,7 @@
 const express = require('express');
 const shipping = require('./shipping');
 const inventory = require('./inventory');
+const purchase = require('./purchase')
 const cors = require('cors');
 
 const app = express();
@@ -58,6 +59,18 @@ app.get('/product/:id', (req, res, next) => {
         }
     });
 });
+
+app.get('/purchase/:id', (req, res, next) => {
+    purchase.BuyBook({ id: req.params.id }, (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({ error: 'something failed :(' });
+        } else {
+            res.json(data);
+        }
+    });
+});
+
 /**
  * Inicia o router
  */

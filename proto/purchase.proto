@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+service PurchaseService {
+    rpc BuyBook(Payload) returns (PurchaseResponse) {}
+}
+
+message Payload {
+    int32 id = 1;
+}
+
+message PurchaseResponse{
+    int32 id = 1;
+    string name = 2;
+    int32 quantity = 3;
+    float price = 4;
+    string photo = 5;
+    string author = 6;
+}

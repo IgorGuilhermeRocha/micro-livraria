@@ -22,6 +22,7 @@ server.addService(inventoryProto.InventoryService.service, {
     },
 
     SearchProductByID: (payload, callback) => {
+        console.log(products.find((product) => product.id == payload.request.id).quantity)
         callback(
             null,
             products.find((product) => product.id == payload.request.id)
